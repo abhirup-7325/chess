@@ -9,4 +9,16 @@ const ORIGNAL_BOARD: string[][] = [
     ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"],
 ];
 
-export { ORIGNAL_BOARD as ORIGINAL_BOARD };
+const squareSize = 80;
+const rows = 8;
+const cols = 8;
+const lightSquaresColor = "#eeeed2";
+const darkSquaresColor = "#b18a6a";
+
+export { ORIGNAL_BOARD as ORIGINAL_BOARD, 
+    squareSize as squareSize, 
+    rows as rows, 
+    cols as cols,
+    lightSquaresColor as lightSquaresColor,
+    darkSquaresColor as darkSquaresColor 
+};

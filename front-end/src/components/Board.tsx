@@ -1,14 +1,17 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { type RootState } from '../redux/store.ts';
+import { squareSize, rows, cols, lightSquaresColor, darkSquaresColor } from '../utils/constants.ts';
+import Move from '../utils/GameLogic/Move.ts';
+import { useState } from 'react';
+import { updateGameState } from '../redux/slices/GameState.slice';
 
 export default function Board() {
     const gameStateWrapper = useSelector((state: RootState) => state.gameState);
     const gameState = gameStateWrapper.gameState;
 
+    console.log(lightSquaresColor)
     console.log(gameState);
-    const squareSize = 60;
-    const rows = 8;
-    const cols = 8;
+
 
     const squares = [];
 
@@ -18,14 +21,15 @@ export default function Board() {
             squares.push(
                 <div
                     key={`${row}-${col}`}
+                    onClick={() => handleSquareClick(row, col)}
                     className={`flex items-center justify-center text-sm font-semibold ${
-                    isDark ? 'bg-[#b18a6a] text-white' : 'bg-[#eeeed2] text-black'
+                    isDark ? `bg-[${darkSquaresColor}] text-white` : `bg-[${lightSquaresColor}] text-black`
                     }`}
                 >
 
                     {
                         gameState.board[row][col] !== "--" && (
-                        <img src={`../pieces/${gameState.board[row][col]}.png`} height={squareSize} alt={`${gameState.board[row][col]}`}/>
+                        <img src={`../pieces/${gameState.board[row][col]}.png`} height={squareSize} width={squareSize}/>
                         )
                     }
 
@@ -33,6 +37,23 @@ export default function Board() {
             );
         }
     }
+
+
+    const dispatch = useDispatch();
+    const [selectedSquare, setSelectedSquare] = useState<[number, number] | null>(null);
+
+    const handleSquareClick = (row: number, col: number) => {
+        if (!selectedSquare) {
+            if (gameState.board[row][col] !== '--') {
+            setSelectedSquare([row, col]);
+            }
+        } else {
+            const move = new Move(selectedSquare, [row, col], gameState.board);
+            gameState.makeMove(move);
+            dispatch(updateGameState(gameState));
+            setSelectedSquare(null);
+        }
+    };
 
     return (
         <div className="flex items-center justify-center">

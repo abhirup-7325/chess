@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { GameState } from '../../utils/GameLogic/GameState';
+import GameState from '../../utils/GameLogic/GameState';
 
 
 interface GameStateWrapper {
@@ -16,11 +16,15 @@ export const gameStateSlice = createSlice({
     reducers: {
         resetGame: (state, action: PayloadAction<GameState>) => {
             state.gameState = action.payload;
-        }
+        },
+
+        updateGameState: (state, action: PayloadAction<GameState>) => {
+            state.gameState = action.payload;
+        },
     }
 });
 
 
-export const { resetGame } = gameStateSlice.actions;
+export const { resetGame, updateGameState } = gameStateSlice.actions;
 export default gameStateSlice.reducer;
 export type { GameStateWrapper };
