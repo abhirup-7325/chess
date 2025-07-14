@@ -23,8 +23,13 @@ export default function Board() {
                     key={`${row}-${col}`}
                     onClick={() => handleSquareClick(row, col)}
                     className={`flex items-center justify-center text-sm font-semibold ${
-                    isDark ? `bg-[${darkSquaresColor}] text-white` : `bg-[${lightSquaresColor}] text-black`
+                    isDark ? 'text-white' : 'text-black'
                     }`}
+                    style={{
+                    width: `${squareSize}px`,
+                    height: `${squareSize}px`,
+                    backgroundColor: isDark ? darkSquaresColor : lightSquaresColor,
+                    }}
                 >
 
                     {
@@ -55,6 +60,15 @@ export default function Board() {
         }
     };
 
+    const handleUndoMove = () => {
+        gameState.undoMove();
+        dispatch(updateGameState(gameState));
+        setSelectedSquare(null);
+        console.log(gameState.board);
+    };
+
+    const [isChangingCounter, setIsChangingCounter] = useState(0);
+
     return (
         <div className="flex items-center justify-center">
             <div
@@ -69,6 +83,8 @@ export default function Board() {
             >
             {squares}
             </div>
+
+            <button onClick={() => { handleUndoMove(); setIsChangingCounter((isChangingCounter + 1) % (1e9 + 7)); } }>Undo</button>
         </div>
     );
 }

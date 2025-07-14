@@ -31,6 +31,15 @@ class GameState {
         this.moveLog.push(move);
         this.whiteToMove = !this.whiteToMove;
     }
+
+    undoMove(): void {
+        if (this.moveLog.length > 0) {
+            const move = this.moveLog.pop()!;
+            this.board[move.startSquare[0]][move.startSquare[1]] = move.pieceMoved;
+            this.board[move.endSquare[0]][move.endSquare[1]] = move.pieceCaptured;
+            this.whiteToMove = !this.whiteToMove;
+        }
+    }
 }
 
 export default GameState;
